@@ -4,6 +4,8 @@ import express from 'express';
 import Roteador from './routes';
 // instancia o express 
 const app = express();
+// Configurar o uso de json
+app.use(express.json());
 // Configuração de uso das rotas
 app.use(Roteador); 
 //configura porta e funçao executada na ativação 
