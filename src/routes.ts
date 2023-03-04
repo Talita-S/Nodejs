@@ -1,7 +1,9 @@
 // Importa componentes do express 
-import {Router,Request,Response} from 'express'; 
+import {Router} from 'express'; 
 // Importa TestController
 import TesteController from "./controllers/TesteController"
+// Validação dos parâmetos da rota
+import ValidaTeste1 from './middlewares/ValidaTeste1';
 // Instancia roteador 
 const Roteador = Router(); 
 // Define rota tipo get que, para funcionar, deve ser requisitada conforme exemplo.
@@ -10,6 +12,7 @@ const Roteador = Router();
 Roteador.get(    
     // URL com parêmetro :id    
     '/teste/:id', 
+    ValidaTeste1,
     new TesteController().teste1
 );
 export default Roteador;
