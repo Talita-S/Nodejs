@@ -3,7 +3,16 @@ import {PrismaClient} from '@prisma/client';
 class ProdutoController {    
     async index(req:Request,res:Response){        
         const prisma = new PrismaClient();        
-        const produtos = await prisma.produto.findMany(); // recupera todos os produto        
+        const produtos = await prisma.produto.findMany({
+            orderBy:{nome:'asc'},                
+            select:{
+                nome:true,  // seleciona as propriedade desejadas de Produto
+                preco:true,
+                categoria:{
+                    select:{nome:true}  // traz do model relacionado Categoria apenas o nome
+                }
+            }
+        }); // recupera todos os produto        
         res.status(200).json(produtos);    
     }
 
