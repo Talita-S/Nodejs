@@ -26,6 +26,8 @@ model Produto {
   // Produtos tem vários fornecedotes (N - N)
   fornecedores Fornecedor[]
 
+  itensNota ItemNotaFiscal[]
+
   @@map("produtos")
 }
 
@@ -58,4 +60,30 @@ model Usuario{
   senha String @db.VarChar(50)
 
   @@map("usuarios")
+}
+
+model NotaFiscal{
+  id Int @id @default(autoincrement())
+  cpfCliente String @db.VarChar(20)
+  dataVenda DateTime
+  enderecoEntrega String @db.VarChar(100)
+
+  itemNotaFiscal ItemNotaFiscal[]
+
+  @@map("notasfiscais")
+}
+
+model ItemNotaFiscal{
+  id Int @id @default(autoincrement())
+
+  notaFiscalId Int
+  notaFiscal NotaFiscal @relation(fields: [notaFiscalId], references: [id])
+
+  produtoId Int
+  produto Produto @relation(fields: [produtoId], references: [id])
+
+  quantidade Int
+  valorUnitario Decimal @db.Decimal(12,2)
+
+  @@map("itemnotafiscal")
 }
