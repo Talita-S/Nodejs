@@ -26,7 +26,7 @@ model Produto {
   // Produtos tem vários fornecedotes (N - N)
   fornecedores Fornecedor[]
 
-  @@map("podutos")
+  @@map("produtos")
 }
 
 model Fornecedor{
@@ -39,7 +39,7 @@ model Fornecedor{
   // Fornecedor fornece vários produtos (N - N)
   produtos Produto[]
 
-  @@map("fornecedors")
+  @@map("fornecedores")
 }
 
 model Categoria{
