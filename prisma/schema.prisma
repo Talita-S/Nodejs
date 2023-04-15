@@ -87,3 +87,95 @@ model ItemNotaFiscal{
 
   @@map("itemnotafiscal")
 }
+
+// Sistema acadêmico - Avaliação
+
+model Curso {
+  id Int @id @default(autoincrement())
+  nome String @db.VarChar(50)
+  descricao String @db.VarChar(2000)
+  professorId Int
+  coordenador Professor @relation(fields: [professorId], references: [id])
+  aluno Aluno[]
+
+  @@map("cursos")
+}
+
+model Professor {
+  id Int @id @default(autoincrement())
+  nome String @db.VarChar(100)
+  lattes String @db.VarChar(100)
+  telefone String @db.VarChar(30)
+  email String @db.VarChar(100)
+
+  coordena Curso[]
+
+  @@map("professores")
+}
+
+model SalaAula {
+  id Int @id @default(autoincrement())
+  tipo String @db.VarChar(50)
+  projetorOuTv Boolean
+  bloco String @db.VarChar(30)
+
+  @@map("salasaula")
+}
+
+model Disciplina {
+  id Int @id @default(autoincrement())
+  nome String @db.VarChar(100)
+  ementa String @db.VarChar(500)
+  cargaHoraria Int
+
+  itemBibliografia ItemBibliografia[]
+  materialDidatico MaterialDidatico[]
+
+  @@map("disciplinas")
+}
+
+model ItemBibliografia {
+  id Int @id @default(autoincrement())
+  tipo String @db.VarChar(20) // Principal ou Complementares
+  autores String @db.VarChar(200)
+  titulo String @db.VarChar(100)
+  isbn String? @db.VarChar(50)
+  disciplinaId Int
+  disciplina Disciplina @relation(fields: [disciplinaId], references: [id])
+
+  @@map("itembibliografias")
+}
+
+model MaterialDidatico {
+  id Int @id @default(autoincrement())
+  nomeArquivoOriginal String @db.VarChar(100)
+  nomeArquivoInterno String @db.VarChar(100) @unique
+  autores String @db.VarChar(200)
+  disciplinaId Int
+  disciplina Disciplina @relation(fields: [disciplinaId], references: [id])
+
+  @@map("materiaisdidaticos")
+}
+
+model Aluno {
+  id Int @id @default(autoincrement())
+  nome String @db.VarChar(100)
+  cursoId Int
+  telefone String @db.VarChar(30)
+  email String @db.VarChar(100)
+  curso Curso @relation(fields: [cursoId], references: [id])
+  solicitacao Solicitacao[]
+
+  @@map("alunos")
+}
+
+model Solicitacao {
+  id Int @id @default(autoincrement())
+  assunto String @db.VarChar(100)
+  descricao String @db.VarChar(1000)
+  dataAbertura DateTime @db.DateTime()
+  alunoId Int
+  aluno Aluno @relation(fields: [alunoId], references: [id])
+
+  @@map("solicitacoes")
+}
