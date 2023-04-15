@@ -223,6 +223,8 @@ model Turma {
   semestre Semestre @relation(fields: [semestreId], references: [id])
 
   alunoTurma AlunoTurma[]
+  aula Aula[]
+  prova Prova[]
 }
 
 model AlunoTurma {
@@ -232,11 +234,40 @@ model AlunoTurma {
   alunoId Int
   aluno Aluno @relation(fields: [alunoId], references: [id])
 
+  chamada Chamada[]
+
   @@unique([turmaId,alunoId])
   @@map("alunoturmas")
 }
 
 model Aula {
   id Int @id @default(autoincrement())
+  conteudoProgramatico String @db.VarChar(200)
+  dataProgramada DateTime @db.DateTime
+  tecnicaMetodologica String @db.VarChar(100)
+  turmaId Int
+  turma Turma @relation(fields: [turmaId], references: [id])
+
+  chamada Chamada[]
   @@map("aulas")
+}
+
+model Prova {
+  id Int @id @default(autoincrement())
+  dataProgramada DateTime @db.DateTime
+  tipo String @db.VarChar(30) // presencial, remota, trabalho
+  peso Int 
+  turmaId Int
+  turma Turma @relation(fields: [turmaId], references: [id])
+  @@map("provas")
+}
+
+model Chamada {
+  id Int @id @default(autoincrement())
+  alunoTurmaId Int
+  alunoTurma AlunoTurma @relation(fields: [alunoTurmaId], references: [id])
+  aulaId Int
+  aula Aula @relation(fields: [aulaId], references: [id])
+  presente Boolean
+  @@map("chamadas")
 }
